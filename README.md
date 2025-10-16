@@ -51,7 +51,7 @@ pip install fastapi uvicorn psycopg2-binary sqlalchemy python-dotenv
 
 ```env
 # Database Configuration
-DATABASE_URL=postgresql://postgres:%40Ohm230946@localhost/mcp_config
+DATABASE_URL=postgresql://username:password@localhost/db_name
 
 # MCP Server Configuration
 PORT_A=3001
