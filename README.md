@@ -141,6 +141,33 @@ curl http://localhost:3001/tools
 curl http://localhost:3002/tools
 ```
 
+### Check Tools
+
+ตรวจสอบเครื่องมือทั้งหมดที่มีอยู่ (เวอร์ชันง่าย):
+
+```bash
+# Server A
+curl http://localhost:3001/check-tools
+
+# Server B
+curl http://localhost:3002/check-tools
+```
+
+Response:
+```json
+{
+  "server": "Server A",
+  "tools": [
+    {
+      "name": "get_stock_price",
+      "description": "ดูราคาหุ้นปัจจุบัน",
+      "api_url": null,
+      "http_method": null
+    }
+  ]
+}
+```
+
 ### Register New Tool
 
 เพิ่มเครื่องมือใหม่:
