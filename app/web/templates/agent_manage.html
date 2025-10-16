@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Agent - MCP Control Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-bold">MCP Control Panel</a>
+            <ul class="flex">
+                <li><a href="/" class="hover:text-gray-300 mr-4">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 p-4">
+        <h1 class="text-3xl font-bold">Manage Agent: {{ agent.name }}</h1>
+        <p class="text-gray-600">{{ agent.description }}</p>
+        <hr class="my-6">
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-bold mb-4">Add Server to Agent by URL</h2>
+            <form id="add-server-form">
+                <div class="mb-4">
+                    <label for="server-url" class="block text-gray-700 font-bold mb-2">Server URL</label>
+                    <input type="url" id="server-url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Server</button>
+            </form>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-4">Assigned Servers</h2>
+        <div id="assigned-servers-list" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for server in agent_servers %}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h5 class="text-xl font-bold">{{ server.name }}</h5>
+                <p class="text-gray-600">{{ server.url }}</p>
+                <div class="mt-4">
+                    <a href="/manage-tools/{{ server.server_name }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Manage Tools</a>
+                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded remove-server-btn" data-server-id="{{ server.id }}">Remove</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        const agentId = "{{ agent.id }}";
+    </script>
+    <script src="/static/js/agent_manage.js"></script>
+</body>
+</html>

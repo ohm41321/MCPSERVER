@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tools - MCP Control Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-bold">MCP Control Panel</a>
+            <ul class="flex">
+                <li><a href="/" class="hover:text-gray-300 mr-4">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 p-4">
+        <h1 class="text-3xl font-bold">Manage Tools for <span id="server-name">{{ server_name }}</span></h1>
+        <hr class="my-6">
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-bold mb-4">Add New Tool</h2>
+            <form id="add-tool-form">
+                <div class="mb-4">
+                    <label for="tool-name" class="block text-gray-700 font-bold mb-2">Tool Name</label>
+                    <input type="text" id="tool-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div class="mb-4">
+                    <label for="tool-description" class="block text-gray-700 font-bold mb-2">Description</label>
+                    <textarea id="tool-description" rows="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="tool-parameters" class="block text-gray-700 font-bold mb-2">Parameters (JSON format)</label>
+                    <textarea id="tool-parameters" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">[]</textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="tool-api-url" class="block text-gray-700 font-bold mb-2">API URL</label>
+                    <input type="url" id="tool-api-url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div class="mb-4">
+                    <label for="tool-http-method" class="block text-gray-700 font-bold mb-2">HTTP Method</label>
+                    <select id="tool-http-method" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option>GET</option>
+                        <option>POST</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Tool</button>
+            </form>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-4">Available Tools</h2>
+        <div id="tool-list" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+    </div>
+
+    <!-- Edit Tool Modal -->
+    <div id="edit-tool-modal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form id="edit-tool-form">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Tool</h3>
+                        <div class="mt-2">
+                            <input type="hidden" id="edit-tool-id">
+                            <div class="mb-4">
+                                <label for="edit-tool-name" class="block text-gray-700 font-bold mb-2">Tool Name</label>
+                                <input type="text" id="edit-tool-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-tool-description" class="block text-gray-700 font-bold mb-2">Description</label>
+                                <textarea id="edit-tool-description" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-tool-parameters" class="block text-gray-700 font-bold mb-2">Parameters (JSON format)</label>
+                                <textarea id="edit-tool-parameters" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-tool-api-url" class="block text-gray-700 font-bold mb-2">API URL</label>
+                                <input type="url" id="edit-tool-api-url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-tool-http-method" class="block text-gray-700 font-bold mb-2">HTTP Method</label>
+                                <select id="edit-tool-http-method" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                    <option>GET</option>
+                                    <option>POST</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">Save Changes</button>
+                        <button type="button" id="close-modal-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const serverName = "{{ server_name }}";
+        const serverInfo = {{ server_info | tojson }};
+        const initialTools = {{ tools | tojson }};
+    </script>
+    <script src="/static/js/tools.js"></script>
+</body>
+</html>

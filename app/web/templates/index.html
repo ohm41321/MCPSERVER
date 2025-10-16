@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Server Control Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-bold">MCP Control Panel</a>
+            <ul class="flex">
+                <li><a href="/" class="hover:text-gray-300 mr-4">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 p-4">
+        <h1 class="text-3xl font-bold">Select an Agent</h1>
+        <hr class="my-6">
+
+        <div id="agent-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for agent in agents %}
+            <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+                <div>
+                    <h5 class="text-xl font-bold">{{ agent.name }}</h5>
+                    <p class="text-gray-600 mt-2">{{ agent.description }}</p>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <a href="/chat/{{ agent.id }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">Chat</a>
+                    <a href="/manage/{{ agent.id }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Manage</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+            <h2 class="text-2xl font-bold mb-4">Create New Agent</h2>
+            <form id="create-agent-form">
+                <div class="mb-4">
+                    <label for="agent-name" class="block text-gray-700 font-bold mb-2">Agent Name</label>
+                    <input type="text" id="agent-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div class="mb-4">
+                    <label for="agent-description" class="block text-gray-700 font-bold mb-2">Description</label>
+                    <textarea id="agent-description" rows="2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Agent</button>
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/index.js"></script>
+</body>
+</html>

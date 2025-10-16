@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ server_name }} - MCP Control Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-bold">MCP Control Panel</a>
+            <ul class="flex">
+                <li><a href="/" class="hover:text-gray-300 mr-4">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 p-4">
+        <h1 class="text-3xl font-bold">Chat with {{ agent.name }}</h1>
+        <hr class="my-6">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <div id="chat-container" class="bg-white p-4 rounded-lg shadow-md h-96 overflow-y-auto"></div>
+                <form id="chat-form" class="mt-4 flex">
+                    <input type="text" id="message-input" class="flex-grow shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Type your message...">
+                    <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send</button>
+                </form>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Agent Configuration</h2>
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold">Connected Servers</h3>
+                    {% for server in servers %}
+                    <div class="mt-4 p-2 border rounded">
+                        <p class="font-bold">{{ server.name }}</p>
+                        <p class="text-sm text-gray-600">{{ server.url }}</p>
+                        <h4 class="text-lg font-semibold mt-2">Tools</h4>
+                        <ul class="list-disc list-inside">
+                            {% for tool in server.tools %}
+                            <li>{{ tool.name }}</li>
+                            {% else %}
+                            <li>No tools found for this server.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% else %}
+                    <p>No servers connected to this agent.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>
